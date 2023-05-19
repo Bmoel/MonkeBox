@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Silver.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/Credits.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 1 )
+
+[node name="CreditsPopup" type="Popup"]
+margin_right = 900.0
+margin_bottom = 600.0
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CreditsText" type="RichTextLabel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "Fonts
+------------------------------------------------------------------------------------------
+Silver: Premiere pixel font for games
+Author: Poppy Works, Wolfgang Wozniak
+Major Contributors: Itou Hiro (PixelMPlus), leedheo (DOSGothic), ぶち
+https://poppyworks.itch.io/silver
+------------------------------------------------------------------------------------------"
+text = "Fonts
+------------------------------------------------------------------------------------------
+Silver: Premiere pixel font for games
+Author: Poppy Works, Wolfgang Wozniak
+Major Contributors: Itou Hiro (PixelMPlus), leedheo (DOSGothic), ぶち
+https://poppyworks.itch.io/silver
+------------------------------------------------------------------------------------------"
+
+[connection signal="popup_hide" from="." to="." method="_on_CreditsPopup_popup_hide"]

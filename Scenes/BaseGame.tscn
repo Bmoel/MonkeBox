@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/BaseGame.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Board.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
+
+[node name="BaseGame" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color( 0.623529, 0.521569, 0.329412, 1 )
+
+[node name="Board" parent="." instance=ExtResource( 2 )]
+
+[node name="Monkey" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 0.5, 0.5 )
