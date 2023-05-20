@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/BaseGame.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Board.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Silver.ttf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 90
+outline_size = 2
+font_data = ExtResource( 4 )
 
 [node name="BaseGame" type="Node2D"]
 script = ExtResource( 1 )
@@ -17,4 +23,29 @@ color = Color( 0.623529, 0.521569, 0.329412, 1 )
 [node name="Board" parent="." instance=ExtResource( 2 )]
 
 [node name="Monkey" parent="." instance=ExtResource( 3 )]
-scale = Vector2( 0.5, 0.5 )
+
+[node name="Score" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = 550.0
+margin_right = 590.0
+margin_bottom = 100.0
+custom_colors/font_color = Color( 0.882353, 0.0705882, 0.0705882, 1 )
+custom_fonts/font = SubResource( 1 )
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="BananaTimer" type="Timer" parent="Timers"]
+wait_time = 5.0
+autostart = true
+
+[node name="PitfallTimer" type="Timer" parent="Timers"]
+wait_time = 2.0
+autostart = true
+
+[node name="AliveTimer" type="Timer" parent="Timers"]
+autostart = true
+
+[connection signal="timeout" from="Timers/BananaTimer" to="." method="_on_BananaTimer_timeout"]
+[connection signal="timeout" from="Timers/PitfallTimer" to="." method="_on_PitfallTimer_timeout"]
+[connection signal="timeout" from="Timers/AliveTimer" to="." method="_on_AliveTimer_timeout"]

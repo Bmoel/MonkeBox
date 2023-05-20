@@ -28,13 +28,25 @@ Silver: Premiere pixel font for games
 Author: Poppy Works, Wolfgang Wozniak
 Major Contributors: Itou Hiro (PixelMPlus), leedheo (DOSGothic), ぶち
 https://poppyworks.itch.io/silver
-------------------------------------------------------------------------------------------"
+------------------------------------------------------------------------------------------
+
+Art
+------------------------------------------------------------------------------------------
+Monkey Art/Animations
+https://tiki-ted.itch.io/pixel-art-monkey
+By TikiTed"
 text = "Fonts
 ------------------------------------------------------------------------------------------
 Silver: Premiere pixel font for games
 Author: Poppy Works, Wolfgang Wozniak
 Major Contributors: Itou Hiro (PixelMPlus), leedheo (DOSGothic), ぶち
 https://poppyworks.itch.io/silver
-------------------------------------------------------------------------------------------"
+------------------------------------------------------------------------------------------
+
+Art
+------------------------------------------------------------------------------------------
+Monkey Art/Animations
+https://tiki-ted.itch.io/pixel-art-monkey
+By TikiTed"
 
 [connection signal="popup_hide" from="." to="." method="_on_CreditsPopup_popup_hide"]

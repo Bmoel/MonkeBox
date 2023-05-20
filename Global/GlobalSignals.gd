@@ -6,7 +6,7 @@ extends Node
 * Params: direction (String to say left,right,up, or down)
 """
 # warning-ignore:unused_signal
-signal player_moved(direction)
+signal player_moved(direction, is_dash)
 
 """
 * Purpose: To let player know they can change position
