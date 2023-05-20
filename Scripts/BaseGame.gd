@@ -12,6 +12,7 @@ const LIVE_AMOUNT = 5
 
 #GLOBALS
 var _total_points: int = 0 #track how many points player has gotten
+var _score_popup = preload("res://Scenes/ScoreEnd.tscn")
 
 """
 * Pre: Called when base game is initialized
@@ -76,3 +77,8 @@ func _end_game() -> void:
 	timers.queue_free()
 	score.queue_free()
 	player.queue_free()
+	var score_tab_inst = _score_popup.instance()
+	add_child(score_tab_inst)
+	score_tab_inst.set_score(_total_points)
+	score_tab_inst.popup_exclusive = true
+	score_tab_inst.popup_centered()

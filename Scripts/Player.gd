@@ -1,8 +1,5 @@
 extends AnimatedSprite
 
-#GLOBALS
-var _last_direction:String = "right"
-
 """
 * Pre: First function that is called when player is instanced
 * Post: Performs necessary start actions
@@ -19,20 +16,18 @@ func _ready() -> void:
 * Return: None
 """
 func _input(_event) -> void:
-	if Input.is_action_just_pressed("dash",false):
-		GlobalSignals.emit_signal("player_moved",_last_direction,true)
-		handle_direction(_last_direction)
-	elif Input.is_action_pressed("right",false):
-		GlobalSignals.emit_signal("player_moved","right",false)
+	var dash_pressed = Input.is_action_pressed("dash")
+	if Input.is_action_pressed("right",false):
+		GlobalSignals.emit_signal("player_moved","right",dash_pressed)
 		handle_direction("right")
 	elif Input.is_action_pressed("left",false):
-		GlobalSignals.emit_signal("player_moved","left",false)
+		GlobalSignals.emit_signal("player_moved","left",dash_pressed)
 		handle_direction("left")
 	elif Input.is_action_pressed("up",false):
-		GlobalSignals.emit_signal("player_moved","up",false)
+		GlobalSignals.emit_signal("player_moved","up",dash_pressed)
 		handle_direction("up")
 	elif Input.is_action_pressed("down",false):
-		GlobalSignals.emit_signal("player_moved","down",false)
+		GlobalSignals.emit_signal("player_moved","down",dash_pressed)
 		handle_direction("down")
 
 """
@@ -41,7 +36,6 @@ func _input(_event) -> void:
 * Return: None
 """
 func handle_direction(direction:String) -> void:
-	_last_direction = direction
 	match direction:
 		"right":
 			play("idle")

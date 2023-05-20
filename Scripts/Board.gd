@@ -104,15 +104,16 @@ func spawn_pitfall() -> void:
 func get_new_position(direction:String, is_dash = false) -> int:
 	var buf = 0
 	if direction == "left":
-		var lTest = (_current_position % 10 != 0)
+		var num = _current_position % 10
+		var lTest = (0 != num)
 		buf = -1 if lTest else 0
-		if is_dash and lTest:
+		if is_dash and lTest and (1 != num):
 			buf = -2
 	elif direction == "right":
 		var num = _current_position % 10
 		var rTest = (9 != num)
 		buf = +1 if rTest else 0
-		if is_dash and rTest:
+		if is_dash and rTest and (8 != num):
 			buf = +2
 	elif direction == "up":
 		buf = -10 if (_current_position > 9) else 0
