@@ -1,7 +1,13 @@
 extends Node2D
 
+#SIGNALS
 signal game_over() #emitted when player has died
-signal hit_powerup() #player stepped on powerup
+signal hit_powerup(loc) #player stepped on powerup
+signal spawn_banana(banana_obj, loc) #banana needs to be spawned
+
+#GAME OBJECTS
+var banana_img = preload("res://Scenes/BananaSprite.tscn")
+var patterns = preload("res://Scripts/Patterns.gd").new()
 
 #CONSTANTS
 const NUM_SQUARES = 100
@@ -11,11 +17,13 @@ const ROW_COLS = 10
 const SPRITE_BUF = 22
 
 #GLOBAL VARS
+var _inc_id: int = 0 #identifier for increment
 var _current_position: int = 0 #current position of player
 var _alive_boards: Array = [] #board status to tell if player can step on board or not
 var _saved_positions: Array = [] #Vector2s of all possible positions player can be
 var _banana_locations: Array = [] #Places on board where player can find powerups
 var _color_rects: Array = [] #array to hold all color rects so can be changed later
+var _blink_ids:Dictionary = {} #dictionary to hold location -> id
 
 """
 * Pre: First function that is called when board is instanced
@@ -58,20 +66,21 @@ func initialize_board() -> void:
 func _player_moved(direction:String, is_dash:bool) -> void:
 	_current_position = get_new_position(direction, is_dash)
 	var board_pos = get_vec_position(_current_position)
-	GlobalSignals.emit_signal("change_position", board_pos)
+	var is_down = true if (direction == "down") else false
+	GlobalSignals.emit_signal("change_position", board_pos, is_down)
 	check_events(_current_position)
 
 """
 * Pre: Called when player has moved
 * Post: Tracks if events are happening in game
+* Params: idx (index of array to check AKA location on board)
 * Return: None
 """
-func check_events(pos:int) -> void:
+func check_events(idx:int) -> void:
 	#Power up check
-	if pos in _banana_locations:
-		_banana_locations.erase(pos)
-		_color_rects[_current_position].color = Color.whitesmoke
-		emit_signal("hit_powerup")
+	if idx in _banana_locations:
+		_banana_locations.erase(idx)
+		emit_signal("hit_powerup", get_vec_position(idx))
 	#End game check
 	elif not (_current_position in _alive_boards):
 		emit_signal("game_over")
@@ -82,19 +91,106 @@ func check_events(pos:int) -> void:
 * Return: None
 """
 func spawn_banana() -> void:
-	var pwrup_loc = randi() % len(_alive_boards)
+	var idx = randi() % len(_alive_boards)
+	var pwrup_loc = _alive_boards[idx]
 	_banana_locations.append(pwrup_loc)
-	_color_rects[pwrup_loc].color = Color.yellow
+	var banana = banana_img.instance()
+	emit_signal("spawn_banana", banana, get_vec_position(pwrup_loc))
 
 """
 * Pre: Called when timer hits 0 in BaseGame.gd
-* Post: Spawns a pitfall that player should avoid
+* Post: Spawns a single pitfall that player should avoid
 * Return: None
 """
 func spawn_pitfall() -> void:
-	var pit = randi() % len(_alive_boards)
-	_alive_boards.erase(pit)
-	_color_rects[pit].color = Color.black
+	var idx = randi() % len(_alive_boards)
+	var pit = _alive_boards[idx]
+	create_timers([pit])
+
+"""
+* Pre: Called when timer hits 0 in BaseGame.gd
+* Post: Spawns a special pitfall from SpecialPatterns
+* Return: None
+"""
+func spawn_special_pitfall() -> void:
+	var special_dict = patterns.SpecialPatterns
+	var types = special_dict.keys()
+	var rand_type = types[randi() % len(types)]
+	create_timers(special_dict[rand_type])
+
+"""
+* Pre: called in pitfall spawning functions
+* Post: starts timers for areas that will go away eventually
+* Params: locations (locations to pass into timer callback functions)
+* Return: None
+"""
+func create_timers(locations:Array) -> void:
+	var current_id = _inc_id
+	for loc in locations:
+		_blink_ids[loc] = _inc_id
+	_inc_id += 1
+	if _inc_id == 9223372036854775807:
+		_inc_id = 0
+	var impTimer = Timer.new()
+	var blinkTimer = Timer.new()
+	impTimer.one_shot = true
+	impTimer.autostart = true
+	impTimer.wait_time = 1.5
+	blinkTimer.one_shot = false
+	blinkTimer.autostart = true
+	blinkTimer.wait_time = 0.25
+	impTimer.connect("timeout", self, "implement_pitfalls", [locations,impTimer,blinkTimer])
+	blinkTimer.connect("timeout", self, "blink_locations", [locations, current_id])
+	add_child(impTimer)
+	add_child(blinkTimer)
+
+"""
+* Pre: Called when timer hits 0
+* Post: Makes locations that are going away blink as a warning
+* Params: locations (locations to make blink)
+* Return: None
+"""
+func blink_locations(locations:Array, id:int) -> void:
+	for pit in locations:
+		if _blink_ids.has(pit):
+			if not (_blink_ids[pit] == id):
+				continue
+		if not (pit in _alive_boards):
+			continue
+		if _color_rects[pit].color == Color.whitesmoke:
+			_color_rects[pit].color = Color.lightcoral
+		else:
+			_color_rects[pit].color = Color.whitesmoke
+		
+
+"""
+* Pre: Called when timer hits 0
+* Post: Warnings over, make all locations in array go away
+* Params: locations (locations to make blink)
+*		  iTmr (timer for implement pitfalls)
+*		  bTmr (timer for warning blinks)
+* Return: None
+"""
+func implement_pitfalls(locations:Array, iTmr:Timer, bTmr:Timer) -> void:
+	iTmr.queue_free()
+	bTmr.disconnect("timeout", self, "blink_locations")
+	bTmr.queue_free()
+	for pit in locations:
+		if _blink_ids.has(pit):
+			# warning-ignore:return_value_discarded
+			_blink_ids.erase(pit)
+		if _alive_boards.has(pit):
+			_alive_boards.erase(pit)
+		_color_rects[pit].color = Color.black
+	check_events(_current_position)
+
+func reset_board() -> void:
+	_alive_boards.clear()
+	_blink_ids.clear()
+	for i in range(NUM_SQUARES):
+		_alive_boards.append(i)
+		_color_rects[i].color = Color.whitesmoke
+	
 
 """
 * Pre: Used in _player_moved
@@ -146,4 +242,4 @@ func gen_rand_player_pos() -> void:
 	#Generate random start position for player
 	_current_position = randi() % 100
 	var board_pos = get_vec_position(_current_position)
-	GlobalSignals.emit_signal("change_position", board_pos)
+	GlobalSignals.emit_signal("change_position", board_pos, false)

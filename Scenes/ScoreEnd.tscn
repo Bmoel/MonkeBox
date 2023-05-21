@@ -1,7 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/ScoreEnd.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Silver.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=3]
+size = 200
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 120
@@ -13,6 +19,30 @@ font_data = ExtResource( 2 )
 size = 64
 font_data = ExtResource( 2 )
 
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.196078, 0.976471, 0.2, 0.0980392 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.196078, 0.976471, 0.2, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.2, 0.85098, 0.862745, 0.0980392 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.2, 0.85098, 0.862745, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.984314, 0.254902, 0.254902, 0.0980392 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.984314, 0.254902, 0.254902, 1 )
+
 [node name="Popup" type="Popup"]
 margin_right = 900.0
 margin_bottom = 600.0
@@ -23,48 +53,64 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.807843, 0.768627, 0.768627, 1 )
 
-[node name="FinalScore" type="Label" parent="."]
+[node name="GameOver" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -235.0
-margin_top = 120.0
-margin_right = -195.0
-margin_bottom = 253.0
+margin_left = -278.5
+margin_right = 278.5
+margin_bottom = 222.0
+custom_fonts/font = SubResource( 3 )
+text = "Game Over"
+
+[node name="FinalScore" type="Label" parent="."]
+margin_left = 160.0
+margin_top = 200.0
+margin_right = 756.0
+margin_bottom = 333.0
 custom_colors/font_color = Color( 0.992157, 0.254902, 0.254902, 1 )
 custom_fonts/font = SubResource( 1 )
+text = "Final Score: 4444"
 
-[node name="Buttons" type="VBoxContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -76.0
-margin_top = -266.0
-margin_right = 76.0
-margin_bottom = -78.0
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = 39.0
+margin_right = 200.0
+margin_bottom = 281.0
 
-[node name="MainMenu" type="Button" parent="Buttons"]
-margin_right = 152.0
-margin_bottom = 60.0
+[node name="Buttons" type="VBoxContainer" parent="CenterContainer"]
+margin_right = 400.0
+margin_bottom = 242.0
+
+[node name="MainMenu" type="Button" parent="CenterContainer/Buttons"]
+margin_right = 400.0
+margin_bottom = 78.0
+rect_min_size = Vector2( 400, 0 )
 focus_neighbour_top = NodePath("../Quit")
 custom_fonts/font = SubResource( 2 )
+custom_styles/focus = SubResource( 4 )
 text = "Main Menu"
 
-[node name="PlayAgain" type="Button" parent="Buttons"]
-margin_top = 64.0
-margin_right = 152.0
-margin_bottom = 124.0
+[node name="PlayAgain" type="Button" parent="CenterContainer/Buttons"]
+margin_top = 82.0
+margin_right = 400.0
+margin_bottom = 160.0
 custom_fonts/font = SubResource( 2 )
+custom_styles/focus = SubResource( 5 )
 text = "Play Again"
 
-[node name="Quit" type="Button" parent="Buttons"]
-margin_top = 128.0
-margin_right = 152.0
-margin_bottom = 188.0
+[node name="Quit" type="Button" parent="CenterContainer/Buttons"]
+margin_top = 164.0
+margin_right = 400.0
+margin_bottom = 242.0
 focus_neighbour_bottom = NodePath("../MainMenu")
 custom_fonts/font = SubResource( 2 )
+custom_styles/focus = SubResource( 6 )
 text = "Quit"
 
-[connection signal="pressed" from="Buttons/MainMenu" to="." method="_on_MainMenu_pressed"]
-[connection signal="pressed" from="Buttons/PlayAgain" to="." method="_on_PlayAgain_pressed"]
-[connection signal="pressed" from="Buttons/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="pressed" from="CenterContainer/Buttons/MainMenu" to="." method="_on_MainMenu_pressed"]
+[connection signal="pressed" from="CenterContainer/Buttons/PlayAgain" to="." method="_on_PlayAgain_pressed"]
+[connection signal="pressed" from="CenterContainer/Buttons/Quit" to="." method="_on_Quit_pressed"]

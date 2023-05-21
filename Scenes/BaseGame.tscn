@@ -1,13 +1,22 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/BaseGame.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Board.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Silver.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Assets/Arcade-Puzzler.mp3" type="AudioStream" id=5]
+[ext_resource path="res://Assets/PowerUp18.mp3" type="AudioStream" id=6]
+[ext_resource path="res://Assets/SynthChime7.mp3" type="AudioStream" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 90
 outline_size = 2
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 500
+outline_size = 4
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 4 )
 
 [node name="BaseGame" type="Node2D"]
@@ -27,11 +36,37 @@ color = Color( 0.623529, 0.521569, 0.329412, 1 )
 [node name="Score" type="Label" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = 550.0
-margin_right = 590.0
+margin_left = -20.0
+margin_right = 20.0
 margin_bottom = 100.0
 custom_colors/font_color = Color( 0.882353, 0.0705882, 0.0705882, 1 )
 custom_fonts/font = SubResource( 1 )
+
+[node name="Reset" type="Label" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0.764706 )
+margin_left = 271.0
+margin_top = 172.0
+margin_right = 1061.0
+margin_bottom = 725.0
+custom_fonts/font = SubResource( 2 )
+text = "RESET"
+
+[node name="Music" type="Node" parent="."]
+
+[node name="ArcadePuzzler" type="AudioStreamPlayer" parent="Music"]
+stream = ExtResource( 5 )
+bus = "Music"
+
+[node name="SFX" type="Node" parent="."]
+
+[node name="PowerUp18" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 6 )
+bus = "SFX"
+
+[node name="SynthChime7" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource( 7 )
+bus = "SFX"
 
 [node name="Timers" type="Node" parent="."]
 
@@ -43,9 +78,19 @@ autostart = true
 wait_time = 2.0
 autostart = true
 
+[node name="SpecialPitfallTimer" type="Timer" parent="Timers"]
+wait_time = 15.0
+autostart = true
+
+[node name="ResetBoardTimer" type="Timer" parent="Timers"]
+wait_time = 25.0
+autostart = true
+
 [node name="AliveTimer" type="Timer" parent="Timers"]
 autostart = true
 
 [connection signal="timeout" from="Timers/BananaTimer" to="." method="_on_BananaTimer_timeout"]
 [connection signal="timeout" from="Timers/PitfallTimer" to="." method="_on_PitfallTimer_timeout"]
+[connection signal="timeout" from="Timers/SpecialPitfallTimer" to="." method="_on_SpecialPitfallTimer_timeout"]
+[connection signal="timeout" from="Timers/ResetBoardTimer" to="." method="_on_ResetBoardTimer_timeout"]
 [connection signal="timeout" from="Timers/AliveTimer" to="." method="_on_AliveTimer_timeout"]

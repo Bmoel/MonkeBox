@@ -9,7 +9,7 @@ onready var ScoreObj = $FinalScore
 * Return: None
 """
 func _ready() -> void:
-	$Buttons/MainMenu.grab_focus()
+	$CenterContainer/Buttons/MainMenu.grab_focus()
 
 """
 * Pre: Popup is hidden
@@ -17,7 +17,12 @@ func _ready() -> void:
 * Return: None
 """
 func set_score(final_score:int) -> void:
-	ScoreObj.text = "Final Score: " + str(final_score)
+	var num_text = str(final_score)
+	ScoreObj.text = "Final Score: " + num_text
+	var BASE = 200
+	var offset = (len(num_text) - 2) * 15
+	ScoreObj.rect_position.x = BASE - offset
+	ScoreObj.rect_position.y = 200
 
 """
 * Pre: Button is pressed
