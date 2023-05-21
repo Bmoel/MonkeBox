@@ -67,7 +67,8 @@ func _player_moved(direction:String, is_dash:bool) -> void:
 	_current_position = get_new_position(direction, is_dash)
 	var board_pos = get_vec_position(_current_position)
 	var is_down = true if (direction == "down") else false
-	GlobalSignals.emit_signal("change_position", board_pos, is_down)
+	var is_up = true if (direction == "up") else false
+	GlobalSignals.emit_signal("change_position", board_pos, is_down, is_up, is_dash)
 	check_events(_current_position)
 
 """
@@ -242,4 +243,4 @@ func gen_rand_player_pos() -> void:
 	#Generate random start position for player
 	_current_position = randi() % 100
 	var board_pos = get_vec_position(_current_position)
-	GlobalSignals.emit_signal("change_position", board_pos, false)
+	GlobalSignals.emit_signal("change_position", board_pos, false, false, false)

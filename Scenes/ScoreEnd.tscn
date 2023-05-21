@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/ScoreEnd.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Silver.ttf" type="DynamicFontData" id=2]
@@ -19,6 +19,13 @@ font_data = ExtResource( 2 )
 size = 64
 font_data = ExtResource( 2 )
 
+[sub_resource type="StyleBoxFlat" id=7]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.196078, 0.976471, 0.2, 1 )
+
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.196078, 0.976471, 0.2, 0.0980392 )
 border_width_left = 2
@@ -27,6 +34,13 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0.196078, 0.976471, 0.2, 1 )
 
+[sub_resource type="StyleBoxFlat" id=8]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.2, 0.85098, 0.862745, 1 )
+
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.2, 0.85098, 0.862745, 0.0980392 )
 border_width_left = 2
@@ -34,6 +48,13 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0.2, 0.85098, 0.862745, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.984314, 0.254902, 0.254902, 1 )
 
 [sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.984314, 0.254902, 0.254902, 0.0980392 )
@@ -91,6 +112,7 @@ margin_bottom = 78.0
 rect_min_size = Vector2( 400, 0 )
 focus_neighbour_top = NodePath("../Quit")
 custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 7 )
 custom_styles/focus = SubResource( 4 )
 text = "Main Menu"
 
@@ -99,6 +121,7 @@ margin_top = 82.0
 margin_right = 400.0
 margin_bottom = 160.0
 custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 8 )
 custom_styles/focus = SubResource( 5 )
 text = "Play Again"
 
@@ -108,6 +131,7 @@ margin_right = 400.0
 margin_bottom = 242.0
 focus_neighbour_bottom = NodePath("../MainMenu")
 custom_fonts/font = SubResource( 2 )
+custom_styles/hover = SubResource( 9 )
 custom_styles/focus = SubResource( 6 )
 text = "Quit"
 

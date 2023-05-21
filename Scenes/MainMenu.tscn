@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://Scripts/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Silver.ttf" type="DynamicFontData" id=2]
@@ -105,6 +105,13 @@ font_data = ExtResource( 2 )
 size = 65
 font_data = ExtResource( 2 )
 
+[sub_resource type="StyleBoxFlat" id=42]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.156863, 0.803922, 0.298039, 1 )
+
 [sub_resource type="StyleBoxFlat" id=34]
 bg_color = Color( 0.156863, 0.803922, 0.298039, 0.0980392 )
 border_width_left = 2
@@ -117,6 +124,13 @@ border_color = Color( 0.156863, 0.803922, 0.298039, 1 )
 size = 65
 font_data = ExtResource( 2 )
 
+[sub_resource type="StyleBoxFlat" id=39]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.145098, 0.823529, 0.87451, 1 )
+
 [sub_resource type="StyleBoxFlat" id=35]
 bg_color = Color( 0.145098, 0.823529, 0.87451, 0.0980392 )
 border_width_left = 2
@@ -124,6 +138,13 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color( 0.145098, 0.823529, 0.87451, 1 )
+
+[sub_resource type="StyleBoxFlat" id=40]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.847059, 0.12549, 0.87451, 1 )
 
 [sub_resource type="StyleBoxFlat" id=36]
 bg_color = Color( 0.847059, 0.12549, 0.87451, 0.0980392 )
@@ -136,6 +157,13 @@ border_color = Color( 0.847059, 0.12549, 0.87451, 1 )
 [sub_resource type="DynamicFont" id=4]
 size = 65
 font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=41]
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 0.262745, 0.262745, 1 )
 
 [sub_resource type="StyleBoxFlat" id=37]
 bg_color = Color( 1, 0.262745, 0.262745, 0.0980392 )
@@ -239,7 +267,7 @@ margin_bottom = 79.0
 rect_min_size = Vector2( 300, 0 )
 focus_neighbour_top = NodePath("../Quit")
 custom_fonts/font = SubResource( 2 )
-custom_styles/hover = SubResource( 34 )
+custom_styles/hover = SubResource( 42 )
 custom_styles/focus = SubResource( 34 )
 text = "Play"
 
@@ -248,7 +276,7 @@ margin_top = 83.0
 margin_right = 300.0
 margin_bottom = 162.0
 custom_fonts/font = SubResource( 3 )
-custom_styles/hover = SubResource( 35 )
+custom_styles/hover = SubResource( 39 )
 custom_styles/focus = SubResource( 35 )
 text = "Options"
 
@@ -257,7 +285,7 @@ margin_top = 166.0
 margin_right = 300.0
 margin_bottom = 245.0
 custom_fonts/font = SubResource( 3 )
-custom_styles/hover = SubResource( 36 )
+custom_styles/hover = SubResource( 40 )
 custom_styles/focus = SubResource( 36 )
 text = "Credits"
 
@@ -267,7 +295,7 @@ margin_right = 300.0
 margin_bottom = 328.0
 focus_neighbour_bottom = NodePath("../Play")
 custom_fonts/font = SubResource( 4 )
-custom_styles/hover = SubResource( 37 )
+custom_styles/hover = SubResource( 41 )
 custom_styles/focus = SubResource( 37 )
 text = "Quit Game"
 
