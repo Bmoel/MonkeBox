@@ -9,6 +9,8 @@ onready var ScoreObj = $FinalScore
 * Return: None
 """
 func _ready() -> void:
+	if OS.get_name() == "Web":
+		$CanvasLayer/CenterContainer/Buttons/Quit.disconnect("pressed", self, "_on_Quit_pressed")
 	$CenterContainer/Buttons/MainMenu.grab_focus()
 
 """
@@ -22,7 +24,7 @@ func set_score(final_score:int) -> void:
 	var BASE = 200
 	var offset = (len(num_text) - 2) * 15
 	ScoreObj.rect_position.x = BASE - offset
-	ScoreObj.rect_position.y = 200
+	ScoreObj.rect_position.y = 160
 
 """
 * Pre: Button is pressed
@@ -49,3 +51,12 @@ func _on_PlayAgain_pressed() -> void:
 """
 func _on_Quit_pressed() -> void:
 	get_tree().quit()
+
+"""
+* Pre: Button is pressed
+* Post: Toggle whether instructions are played again or not
+* Return: None
+"""
+func _on_CheckButton_toggled(button_pressed):
+	GlobalSignals.PlayInstructions = button_pressed
+	$CenterContainer/Buttons/PlayAgain.grab_focus()

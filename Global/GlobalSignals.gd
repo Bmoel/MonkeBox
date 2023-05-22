@@ -1,5 +1,7 @@
 extends Node
 
+var PlayInstructions:bool = true
+
 """
 * Purpose: To let board class know if player has moved
 * Used in: Player.gd

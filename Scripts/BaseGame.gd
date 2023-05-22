@@ -7,17 +7,20 @@ onready var player = $Monkey
 onready var timers = $Timers
 onready var SpecialTimer = $Timers/SpecialPitfallTimer
 onready var ResetTimer = $Timers/ResetBoardTimer
+onready var PitfallTimer = $Timers/PitfallTimer
 
 #CONSTANTS
 const POWERUP_AMMOUNT = 50
 const LIVE_AMOUNT = 5
 const BANANA_BUFFER = Vector2(0,20)
-const RESET_TIME_CAP = 60
+const RESET_TIME_CAP = 65
 const SPECIAL_TIME_CAP = 9
+const PITFALL_TIME_CAP = 1
 
 #GLOBALS
 var _total_points: int = 0 #track how many points player has gotten
 var _score_popup = preload("res://Scenes/ScoreEnd.tscn")
+var _instr_popup = preload("res://Scenes/Instructions.tscn")
 var _banana_objects: Dictionary = {} #Hold position plus objects of banana powerups
 var _reset_text_timer_tracker:float = 0.0 #tracks how much time has passed for auto timer
 
@@ -27,7 +30,26 @@ var _reset_text_timer_tracker:float = 0.0 #tracks how much time has passed for a
 * Return: None
 """
 func _ready() -> void:
+	if not GlobalSignals.PlayInstructions:
+		instructions_done()
+		return
+	GlobalSignals.PlayInstructions = false
+	board.hide()
+	player.hide()
+	score.hide()
+	var instr = _instr_popup.instance()
+	add_child(instr)
+	instr.popup_exclusive = true
+	instr.connect("start_game", self, "instructions_done")
+	instr.popup_centered()
+
+func instructions_done() -> void:
 	randomize()
+	board.show()
+	player.show()
+	score.show()
+	for tmr in timers.get_children():
+		tmr.start()
 	$Music/ArcadePuzzler.play()
 	board.gen_rand_player_pos() #spawn player randomly
 	board.connect("game_over", self, "_end_game")
@@ -44,7 +66,8 @@ func _ready() -> void:
 func update_score(new_points:int) -> void:
 	_total_points += new_points
 	score.text = "Score: " + str(_total_points)
-	$Score.rect_position.x = get_viewport().size.x / 2 - 90
+	$Score.rect_position.x = get_viewport().size.x / 2 - 100
+	$Score.rect_position.x -= (5 * (len(str(_total_points)) - 1))
 	$Score.rect_position.y = 50
 
 """
@@ -79,14 +102,21 @@ func _on_SpecialPitfallTimer_timeout():
 func _on_ResetBoardTimer_timeout():
 	$SFX/SynthChime7.play()
 	board.reset_board()
-	SpecialTimer.wait_time -= 1
+	#SpecialTimer
+	SpecialTimer.wait_time -= 2
 	if SpecialTimer.wait_time < SPECIAL_TIME_CAP:
 		SpecialTimer.wait_time = SPECIAL_TIME_CAP
 	SpecialTimer.start()
-	ResetTimer.wait_time += 5
+	#ResetTimer
+	ResetTimer.wait_time += 10
 	if ResetTimer.wait_time > RESET_TIME_CAP:
 		ResetTimer.wait_time = RESET_TIME_CAP
 	ResetTimer.start()
+	#Pitfall Timer
+	PitfallTimer.wait_time -= 0.2
+	if PitfallTimer.wait_time < PITFALL_TIME_CAP:
+		PitfallTimer.wait_time = PITFALL_TIME_CAP
+	#Reset text blink stuff
 	$Reset.show()
 	var txtBlinkTmr = Timer.new()
 	txtBlinkTmr.wait_time = 0.3

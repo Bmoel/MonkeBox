@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/BaseGame.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Board.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Arcade-Puzzler.mp3" type="AudioStream" id=5]
 [ext_resource path="res://Assets/PowerUp18.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Assets/SynthChime7.mp3" type="AudioStream" id=7]
+[ext_resource path="res://trees.png" type="Texture" id=8]
 
 [sub_resource type="DynamicFont" id=1]
 size = 90
@@ -28,6 +29,16 @@ anchor_bottom = 1.0
 margin_right = 1280.0
 margin_bottom = 720.0
 color = Color( 0.623529, 0.521569, 0.329412, 1 )
+
+[node name="trees_left" type="Sprite" parent="."]
+position = Vector2( 376, 360 )
+scale = Vector2( 7.5, 7.5 )
+texture = ExtResource( 8 )
+
+[node name="trees_right" type="Sprite" parent="."]
+position = Vector2( 904, 360 )
+scale = Vector2( -7.5, 7.5 )
+texture = ExtResource( 8 )
 
 [node name="Board" parent="." instance=ExtResource( 2 )]
 
@@ -72,22 +83,17 @@ bus = "SFX"
 
 [node name="BananaTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
-autostart = true
 
 [node name="PitfallTimer" type="Timer" parent="Timers"]
 wait_time = 2.0
-autostart = true
 
 [node name="SpecialPitfallTimer" type="Timer" parent="Timers"]
 wait_time = 15.0
-autostart = true
 
 [node name="ResetBoardTimer" type="Timer" parent="Timers"]
-wait_time = 25.0
-autostart = true
+wait_time = 35.0
 
 [node name="AliveTimer" type="Timer" parent="Timers"]
-autostart = true
 
 [connection signal="timeout" from="Timers/BananaTimer" to="." method="_on_BananaTimer_timeout"]
 [connection signal="timeout" from="Timers/PitfallTimer" to="." method="_on_PitfallTimer_timeout"]

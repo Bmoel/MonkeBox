@@ -93,6 +93,8 @@ func check_events(idx:int) -> void:
 """
 func spawn_banana() -> void:
 	var idx = randi() % len(_alive_boards)
+	if idx > len(_alive_boards):
+		return
 	var pwrup_loc = _alive_boards[idx]
 	_banana_locations.append(pwrup_loc)
 	var banana = banana_img.instance()
@@ -105,6 +107,8 @@ func spawn_banana() -> void:
 """
 func spawn_pitfall() -> void:
 	var idx = randi() % len(_alive_boards)
+	if idx > len(_alive_boards):
+		return
 	var pit = _alive_boards[idx]
 	create_timers([pit])
 
@@ -116,7 +120,10 @@ func spawn_pitfall() -> void:
 func spawn_special_pitfall() -> void:
 	var special_dict = patterns.SpecialPatterns
 	var types = special_dict.keys()
-	var rand_type = types[randi() % len(types)]
+	var idx = randi() % len(types)
+	if idx > len(_alive_boards):
+		return
+	var rand_type = types[idx]
 	create_timers(special_dict[rand_type])
 
 """
@@ -128,8 +135,9 @@ func spawn_special_pitfall() -> void:
 func create_timers(locations:Array) -> void:
 	var current_id = _inc_id
 	for loc in locations:
-		_blink_ids[loc] = _inc_id
+		_blink_ids[loc] = _inc_id #adding to dictionary
 	_inc_id += 1
+	#Check if int it maxed out
 	if _inc_id == 9223372036854775807:
 		_inc_id = 0
 	var impTimer = Timer.new()
@@ -190,6 +198,8 @@ func reset_board() -> void:
 	_blink_ids.clear()
 	for i in range(NUM_SQUARES):
 		_alive_boards.append(i)
+		if i > len(_color_rects):
+			return
 		_color_rects[i].color = Color.whitesmoke
 	
 

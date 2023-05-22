@@ -4,6 +4,8 @@ var credits_scene = preload("res://Scenes/Credits.tscn")
 var options_scene = preload("res://Scenes/Options.tscn")
 
 func _ready() -> void:
+	if OS.get_name() == "Web":
+		$CanvasLayer/CenterContainer/Buttons/Quit.disconnect("pressed", self, "_on_Quit_pressed")
 	# warning-ignore:return_value_discarded
 	GlobalSignals.connect("unselect_credits_button", self, "_credits_focus")
 	#Set initial audios
